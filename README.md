@@ -27,9 +27,9 @@ in a suitable environment (i.e. with cocotb etc installed) is all that is needed
 
 Other interesting make targets include
 
-  WOKWI_PROJECT_ID=XYZ make show_module
-  WOKWI_PROJECT_ID=XYZ make yosys_shell
-and
-  WOKWI_PROJECT_ID=XYZ make show_truthtable # for combinatorial logic on io in/out
+    WOKWI_PROJECT_ID=XYZ make show_module
+    WOKWI_PROJECT_ID=XYZ make yosys_shell
+    and
+    WOKWI_PROJECT_ID=XYZ make show_truthtable # for combinatorial logic on io in/out
 
 
