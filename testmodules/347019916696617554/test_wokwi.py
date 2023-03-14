@@ -9,10 +9,10 @@ SPDX-FileCopyrightText: © 2023 Pat Deegan, https://psychogenic.com
 SPDX-License-Identifier: Apache2.0
 
 '''
-
-import os
 import cocotb
 from cocotb.triggers import Timer
+import test.common.truthtable as truthtable
+
 
 class PadLock:
     '''
@@ -24,7 +24,7 @@ class PadLock:
         self.o_bus = o_bus
         self.lockedLED = usermodule.flipflop1.q
         self.unlockedLED = usermodule.flipflop2.q
-		
+        
     async def hitButton(self):
         self.i_bus[0].value = 1 
         await Timer(20, units='ns') # take effect
@@ -76,7 +76,7 @@ async def playWithPadlock(parentDUT):
     await padlock.hitButton()
     padlock.confirmLocked()
     
-    # fail combo 1
+    # fail combo 2
     await padlock.setCombo(0,0,1)
     await padlock.hitButton()
     padlock.confirmLocked()
@@ -89,3 +89,14 @@ async def playWithPadlock(parentDUT):
     # reset device
     await padlock.reset()
     padlock.confirmLocked()
+    
+
+@cocotb.test()
+async def padlockTruthTableFile(parentDUT):
+    usermodule = parentDUT.dut
+    i_bus = parentDUT.io_in
+    o_bus = parentDUT.io_out
+    tt = truthtable.loadMarkdownTruthTable('test/truthtable.md', usermodule._log)
+    usermodule._log.info(str(tt))
+    await tt.testAll(i_bus, o_bus, usermodule._log)
+
